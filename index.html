@@ -1,0 +1,463 @@
+<!-- test -->
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Embouteillage 2027</title>
+<meta name="description" content="Le compteur officieux (et un peu moqueur) des candidatures à la présidentielle 2027. Ils sont combien déjà ?">
+<meta property="og:title" content="Embouteillage 2027 — ils sont combien déjà ?">
+<meta property="og:description" content="Le compteur des candidatures à la présidentielle 2027. Spoiler : beaucoup.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗳️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bleu:#002395; --bleu2:#1f4fd8; --rouge:#ED2939; --rouge2:#b5121b; --blanc:#ffffff; --encre:#0b1640; --gris:#5a6178; --ligne:#0b1640;
+  --papier:#ffffff; --card:#ffffff;
+  --eg:#8a0f17; --gr:#c8102e; --g:#ED2939; --eco:#f4878f; --c:#eef1fb; --d:#3d6be0; --sv:#1f4fd8; --ed:#001a6e;
+  --inc:linear-gradient(90deg,#002395 0 33.3%,#ffffff 33.3% 66.6%,#ED2939 66.6%);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--papier);color:var(--encre);font-family:"Space Grotesk",system-ui,sans-serif;line-height:1.45;overflow-x:hidden}
+a{color:inherit}
+.wrap{max-width:1100px;margin:0 auto;padding:0 16px}
+.drapeau{height:10px;background:linear-gradient(90deg,var(--bleu) 0 33.3%,#fff 33.3% 66.6%,var(--rouge) 66.6%)}
+
+/* Bandeau défilant */
+.ticker{background:var(--rouge);color:#fff;font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;border-bottom:3px solid var(--ligne)}
+.ticker span{display:inline-block;padding:8px 0;animation:defile 40s linear infinite}
+@keyframes defile{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* Hero */
+.herobg{background:
+  radial-gradient(circle at 15% 20%,rgba(255,255,255,.12) 0 2px,transparent 3px) 0 0/28px 28px,
+  var(--bleu);color:#fff;border-bottom:4px solid var(--ligne)}
+header.hero{padding:40px 16px 34px;text-align:center;position:relative}
+.kicker{display:inline-block;background:#fff;color:var(--bleu);font-weight:700;padding:4px 12px;border:3px solid var(--ligne);transform:rotate(-2deg);box-shadow:4px 4px 0 var(--rouge);font-size:14px;letter-spacing:.04em;text-transform:uppercase}
+h1{font-family:Anton,Impact,sans-serif;font-weight:400;font-size:clamp(40px,9vw,92px);line-height:.95;margin:18px 0 10px;text-transform:uppercase;letter-spacing:.01em}
+h1 .b{color:#fff} h1 .w{color:#c9d5ff} h1 .r{color:var(--rouge);text-shadow:3px 3px 0 #fff}
+.compteur{font-family:Anton,Impact,sans-serif;font-size:clamp(110px,28vw,260px);line-height:.9;margin:10px 0 0;color:#fff;text-shadow:6px 6px 0 var(--rouge),12px 12px 0 var(--encre)}
+.sous{font-size:clamp(17px,2.6vw,22px);font-weight:700;margin:14px auto 0;max-width:720px}
+.mini{color:#c9d5ff;font-size:14px;margin-top:6px}
+.cta{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+.btn{font:inherit;font-weight:700;border:3px solid var(--ligne);background:#fff;color:var(--encre);padding:10px 16px;cursor:pointer;box-shadow:4px 4px 0 var(--ligne);transition:transform .08s, box-shadow .08s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ligne)}
+.btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ligne)}
+.btn.bleu{background:var(--bleu2);color:#fff} .btn.rouge{background:var(--rouge);color:#fff} .btn.blanc{background:#fff;color:var(--bleu)}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:30px 0}
+.stat{background:#fff;border:3px solid var(--ligne);box-shadow:5px 5px 0 var(--ligne);padding:16px}
+.stat .v{font-family:Anton,Impact,sans-serif;font-size:44px;line-height:1}
+.stat .l{font-weight:700;margin-top:6px}
+.stat .s{color:var(--gris);font-size:14px;margin-top:4px}
+.stat:nth-child(3n+1){background:var(--bleu);color:#fff} .stat:nth-child(3n+1) .s{color:#c9d5ff}
+.stat:nth-child(3n+2){background:#fff;color:var(--bleu)}
+.stat:nth-child(3n){background:var(--rouge);color:#fff} .stat:nth-child(3n) .s{color:#ffe0e2}
+
+section{margin:46px 0}
+h2{font-family:Anton,Impact,sans-serif;font-weight:400;font-size:clamp(30px,5vw,46px);text-transform:uppercase;margin:0 0 10px;line-height:1;color:var(--bleu);display:inline-block;padding-bottom:6px;border-bottom:8px solid transparent;border-image:linear-gradient(90deg,var(--bleu) 0 33.3%,#dfe5f7 33.3% 66.6%,var(--rouge) 66.6%) 1}
+.h2s{color:var(--gris);margin:4px 0 18px}
+.box{background:#fff;border:3px solid var(--ligne);box-shadow:6px 6px 0 var(--rouge);padding:16px}
+.box h3{color:var(--bleu)}
+
+/* Graph mensuel */
+.chartscroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+#chart{width:100%;min-width:640px;height:auto;display:block}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:14px;margin-top:8px}
+.legend i{display:inline-block;width:14px;height:14px;border:2px solid var(--ligne);vertical-align:-2px;margin-right:6px}
+.bubble{margin-top:12px;font-weight:700;background:var(--rouge);color:#fff;display:inline-block;padding:6px 10px;border:3px solid var(--ligne)}
+
+/* Classements */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media (max-width:760px){.duo{grid-template-columns:1fr}}
+.duo .box:nth-child(2){box-shadow:6px 6px 0 var(--bleu)}
+.rank{list-style:none;margin:0;padding:0}
+.rank li{display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:10px;padding:8px 0;border-bottom:2px dashed #cdd5ee}
+.rank li:last-child{border-bottom:none}
+.pos{font-family:Anton,Impact,sans-serif;font-size:22px;text-align:center;color:var(--bleu)}
+.barwrap{position:relative}
+.barlab{font-weight:700;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar{height:12px;border:2px solid var(--ligne);margin-top:4px;width:0;transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
+.num{font-family:Anton,Impact,sans-serif;font-size:24px;min-width:30px;text-align:right;color:var(--rouge)}
+.quip{font-size:13px;color:var(--gris)}
+
+/* Filtres + cartes */
+.trombibg{background:#eef1fb;border-top:4px solid var(--ligne);border-bottom:4px solid var(--ligne);padding:36px 0;margin:46px 0}
+.trombibg section{margin:0}
+.tabs,.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.chip{font:inherit;font-size:14px;font-weight:700;border:2px solid var(--ligne);background:#fff;color:var(--bleu);padding:6px 10px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--rouge);color:#fff}
+.tab{font:inherit;font-weight:700;border:3px solid var(--ligne);background:#fff;color:var(--encre);padding:8px 14px;cursor:pointer;box-shadow:3px 3px 0 var(--ligne)}
+.tab[aria-selected="true"]{background:var(--bleu);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px}
+@media (max-width:420px){.grid{grid-template-columns:repeat(2,1fr);gap:10px}}
+.card{background:#fff;border:3px solid var(--ligne);box-shadow:4px 4px 0 var(--bleu);padding:12px;position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;transition:transform .12s}
+.card:nth-child(3n+2){box-shadow:4px 4px 0 var(--rouge)}
+.card:nth-child(3n){box-shadow:4px 4px 0 var(--ligne)}
+.card:hover{transform:rotate(-1.2deg) translateY(-3px)}
+.num-badge{position:absolute;top:-12px;left:-10px;background:var(--rouge);color:#fff;font-family:Anton,Impact,sans-serif;font-size:16px;padding:2px 8px;border:2px solid var(--ligne);transform:rotate(-6deg)}
+.avatar{width:96px;height:96px;border-radius:50%;border:3px solid var(--ligne);display:grid;place-items:center;font-family:Anton,Impact,sans-serif;font-size:36px;color:#fff;overflow:hidden;margin:6px 0 10px;background:#999}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.card h3{margin:0;font-size:17px;line-height:1.15;color:var(--bleu)}
+.card .party{font-size:13px;color:var(--gris);margin-top:2px}
+.tag{display:inline-block;font-size:12px;font-weight:700;color:#fff;padding:2px 8px;margin-top:8px;border:2px solid var(--ligne)}
+.since{font-size:12px;margin-top:8px;font-weight:700}
+.recid{position:absolute;top:8px;right:8px;background:#fff;color:var(--rouge);font-size:11px;font-weight:700;border:2px solid var(--rouge);padding:1px 5px;transform:rotate(5deg)}
+.card.dead{filter:grayscale(1);opacity:.85}
+.card.dead::after{content:"✝";position:absolute;bottom:8px;right:10px;font-size:20px}
+.card.maybe{border-style:dashed}
+.note{font-size:12px;color:var(--gris);margin-top:6px}
+.avatar.tri{border:8px solid transparent;background:linear-gradient(#fff,#fff) padding-box,linear-gradient(90deg,#002395 0 33.3%,#ffffff 33.3% 66.6%,#ED2939 66.6%) border-box !important;color:#002395 !important;box-shadow:0 0 0 3px var(--ligne)}
+.tag.tri{border:3px solid transparent;background:linear-gradient(#fff,#fff) padding-box,linear-gradient(90deg,#002395 0 33.3%,#dfe5f7 33.3% 66.6%,#ED2939 66.6%) border-box !important;color:#002395 !important}
+
+/* Générateur */
+.gen{background:var(--rouge);color:#fff;border:3px solid var(--ligne);box-shadow:6px 6px 0 var(--bleu);padding:20px;text-align:center}
+.gen h2{color:#fff;border-image:linear-gradient(90deg,var(--bleu) 0 33.3%,#fff 33.3% 66.6%,var(--bleu) 66.6%) 1}
+.gen input{font:inherit;font-size:17px;padding:10px 12px;border:3px solid var(--ligne);width:min(100%,340px)}
+.affiche{margin:18px auto 0;max-width:420px;background:#fff;color:var(--encre);border:3px solid var(--ligne);border-top:12px solid transparent;border-image:none;padding:18px;transform:rotate(-1.5deg);display:none;position:relative}
+.affiche::before{content:"";position:absolute;left:-3px;right:-3px;top:-12px;height:12px;background:linear-gradient(90deg,var(--bleu) 0 33.3%,#fff 33.3% 66.6%,var(--rouge) 66.6%);border:3px solid var(--ligne);border-bottom:none}
+.affiche .grand{font-family:Anton,Impact,sans-serif;font-size:34px;line-height:1;text-transform:uppercase;color:var(--bleu)}
+.affiche .slogan{font-weight:700;margin-top:8px;font-size:18px;color:var(--rouge)}
+.affiche .n{display:inline-block;background:var(--bleu);color:#fff;padding:2px 8px;font-weight:700;margin-bottom:8px}
+
+.footbg{background:var(--bleu);color:#fff;border-top:4px solid var(--ligne);margin-top:50px}
+footer{padding:24px 16px 40px;font-size:14px;color:#e6ebff}
+footer h4{margin:0 0 6px;font-size:15px;color:#fff}
+footer ul{padding-left:18px;margin:6px 0 14px}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--bleu);color:#fff;border:3px solid #fff;padding:10px 16px;font-weight:700;transition:opacity .25s;z-index:10;opacity:0;visibility:hidden}
+.toast.on{opacity:1;visibility:visible}
+@media (prefers-reduced-motion:reduce){.ticker span{animation:none}.bar{transition:none}}
+</style>
+</head>
+<body>
+
+<div class="drapeau"></div>
+<div class="ticker" aria-hidden="true"><span id="ticker"></span></div>
+
+<div class="herobg"><header class="hero wrap">
+  <span class="kicker">Présidentielle 2027 · 18 avril &amp; 2 mai</span>
+  <h1><span class="b">Embouteillage</span> <span class="w">à l'</span><span class="r">Élysée</span></h1>
+  <div class="compteur" id="compteur">0</div>
+  <p class="sous" id="sous">candidats déclarés. Pour un seul fauteuil.</p>
+  <p class="mini" id="maj"></p>
+  <div class="cta">
+    <a class="btn blanc" href="#trombi">👀 Voir le trombinoscope</a>
+    <button class="btn bleu" id="share">📣 Partager le carnage</button>
+    <a class="btn rouge" href="#moi">🙋 Je me présente aussi</a>
+  </div>
+</header></div>
+
+<main class="wrap">
+
+  <div class="stats" id="stats"></div>
+
+  <section id="evolution">
+    <h2>📈 La courbe de la fièvre</h2>
+    <p class="h2s">Nouvelles candidatures par mois, et le cumul qui grimpe, grimpe, grimpe.</p>
+    <div class="box">
+      <div class="chartscroll"><svg id="chart" viewBox="0 0 900 380" role="img" aria-label="Évolution mensuelle des candidatures"></svg></div>
+      <div class="legend" style="color:#0b1640">
+        <span><i style="background:var(--bleu)"></i>Nouvelles candidatures du mois</span>
+        <span><i style="background:var(--rouge)"></i>Cumul (tous ceux qui se sont lancés)</span>
+      </div>
+      <div class="bubble" id="record"></div>
+    </div>
+  </section>
+
+  <section id="classements">
+    <h2>🏆 Le classement</h2>
+    <p class="h2s">Qui produit le plus de candidats au mètre carré ? (en lice + tombés au combat)</p>
+    <div class="duo">
+      <div class="box"><h3 style="margin-top:0">Par bord politique</h3><ul class="rank" id="rankBord"></ul></div>
+      <div class="box"><h3 style="margin-top:0">Par parti</h3><ul class="rank" id="rankParti"></ul></div>
+    </div>
+  </section>
+
+</main>
+<div class="trombibg"><div class="wrap">
+  <section id="trombi">
+    <h2>🪪 Le trombinoscope</h2>
+    <p class="h2s">Par ordre d'entrée dans l'arène. Le numéro, c'est leur ticket dans la file d'attente. Les numéros manquants ? Ils sont au cimetière.</p>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" data-s="actif" aria-selected="true">En lice</button>
+      <button class="tab" role="tab" data-s="cimetiere" aria-selected="false">Le cimetière ✝</button>
+      <button class="tab" role="tab" data-s="pressenti" aria-selected="false">Ils hésitent 🤔</button>
+    </div>
+    <div class="filters" id="filters"></div>
+    <div class="grid" id="grid"></div>
+  </section>
+</div></div>
+<main class="wrap">
+
+  <section id="moi">
+    <div class="gen">
+      <h2>Et pourquoi pas toi ?</h2>
+      <p>Il ne te manque que 500 parrainages. Détail.</p>
+      <input id="prenom" placeholder="Ton prénom et ton nom" maxlength="40" aria-label="Ton nom">
+      <div style="margin-top:12px"><button class="btn blanc" id="gogo">🗳️ Déclarer ma candidature</button></div>
+      <div class="affiche" id="affiche"></div>
+    </div>
+  </section>
+
+</main>
+
+<div class="footbg"><footer class="wrap">
+  <h4>Méthode</h4>
+  <p>Est compté « en lice » toute personne ayant annoncé publiquement sa candidature à la présidentielle 2027 et ne l'ayant pas retirée. « Le cimetière » regroupe les candidatures retirées ou battues lors d'une primaire. « Ils hésitent » regroupe les personnalités qui disent envisager une candidature. Le classement des bords politiques reprend celui des médias cités ci-dessous ; il est indicatif. La liste définitive ne sera connue qu'après validation des 500 parrainages par le Conseil constitutionnel, au printemps 2027.</p>
+  <h4>Sources</h4>
+  <ul>
+    <li><a href="https://www.france-vote.fr/candidats">France-Vote — Les candidats à la présidentielle 2027</a></li>
+    <li><a href="https://candidats2027.org/candidats">candidats2027.org — Les candidats déclarés</a></li>
+    <li><a href="https://www.data.gouv.fr/datasets/candidats-a-lelection-presidentielle-2027-liste-statut-date-de-chaque-candidature-parti-et-famille-politique">data.gouv.fr — Candidats à l'élection présidentielle 2027 (Swipe Your President)</a></li>
+    <li><a href="https://www.publicsenat.fr/actualites/politique/election-presidentielle-2027-qui-sont-les-candidats-declares-ou-presque">Public Sénat — Qui sont les candidats déclarés ou presque ?</a></li>
+    <li><a href="https://lcp.fr/actualites/presidentielle-2027-la-liste-des-candidats-deja-en-lice-et-des-pretendants-436373">LCP — La liste des candidats déjà en lice</a></li>
+    <li>Annonces individuelles : LCP, Sud Radio, Lyon Capitale, Le Temps, Euronews, France 24, ICI.</li>
+  </ul>
+  <p>Site parodique et non partisan : on se moque du nombre, pas des personnes. Une erreur, un oubli, un nouveau candidat (il y en aura) ? Ouvrez une issue sur le dépôt GitHub.</p>
+</footer></div>
+<div class="drapeau"></div>
+
+<div class="toast" id="toast">Lien copié 📋</div>
+
+<script>
+/* =========================================================
+   DONNÉES — à mettre à jour à chaque nouvelle annonce.
+   s : "actif" | "cimetiere" | "pressenti"
+   d : date d'annonce (AAAA-MM-JJ) ou null si inconnue
+   fin : date du retrait / de la défaite (cimetière)
+   photo : URL d'une photo libre de droits (laisser vide = initiales)
+   rec : nombre de candidatures présidentielles (badge « récidiviste »)
+   ========================================================= */
+const MAJ = "2026-11-09";
+const BORDS = {
+  eg:  {lab:"Extrême gauche",   col:"var(--eg)",  fg:"#fff"},
+  gr:  {lab:"Gauche radicale",  col:"var(--gr)",  fg:"#fff"},
+  g:   {lab:"Gauche",           col:"var(--g)",   fg:"#fff"},
+  eco: {lab:"Écologistes",      col:"var(--eco)", fg:"#5a0a10"},
+  c:   {lab:"Centre",           col:"var(--c)",   fg:"#002395"},
+  d:   {lab:"Droite",           col:"var(--d)",   fg:"#fff"},
+  sv:  {lab:"Souverainistes",   col:"var(--sv)",  fg:"#fff"},
+  ed:  {lab:"Extrême droite",   col:"var(--ed)",  fg:"#fff"},
+  inc: {lab:"Inclassables",     col:"var(--inc)", fg:"#002395", tri:true}
+};
+const C = [
+  // ---- En lice ----
+  {n:"François Asselineau", p:"Union populaire républicaine", b:"sv", d:"2023-08-31", s:"actif", rec:3},
+  {n:"Xavier Bertrand", p:"Nous France", b:"d", d:"2024-02-03", s:"actif"},
+  {n:"Édouard Philippe", p:"Horizons", b:"c", d:"2024-09-03", s:"actif"},
+  {n:"Nicolas Dupont-Aignan", p:"Debout la France", b:"sv", d:"2025-03-08", s:"actif", rec:4},
+  {n:"François Ruffin", p:"Debout !", b:"gr", d:"2025-04-01", s:"actif"},
+  {n:"Marine Tondelier", p:"Les Écologistes", b:"eco", d:"2025-10-22", s:"actif"},
+  {n:"Delphine Batho", p:"Génération écologie", b:"eco", d:"2025-11-25", s:"actif"},
+  {n:"Nathalie Arthaud", p:"Lutte ouvrière", b:"eg", d:"2025-12-08", s:"actif", rec:4},
+  {n:"Juan Branco", p:"Les Ruches", b:"gr", d:"2025-12-19", s:"actif"},
+  {n:"Bruno Retailleau", p:"Les Républicains", b:"d", d:"2026-02-12", s:"actif"},
+  {n:"David Lisnard", p:"Nouvelle Énergie", b:"d", d:"2026-03-31", s:"actif"},
+  {n:"Lydie Massard", p:"Union démocratique bretonne", b:"g", d:"2026-04-02", s:"actif"},
+  {n:"Clara Egger", p:"Solution démocratique", b:"inc", d:"2026-04-20", s:"actif", rec:2},
+  {n:"Jean-Luc Mélenchon", p:"La France insoumise", b:"gr", d:"2026-05-03", s:"actif", rec:4},
+  {n:"Florian Philippot", p:"Les Patriotes", b:"sv", d:"2026-05-09", s:"actif"},
+  {n:"Gabriel Attal", p:"Renaissance", b:"c", d:"2026-05-22", s:"actif"},
+  {n:"Anasse Kazib", p:"Révolution permanente", b:"eg", d:"2026-06-01", s:"actif"},
+  {n:"Karim Bouamrane", p:"Parti socialiste", b:"g", d:"2026-06-09", s:"actif", note:"Hors primaire"},
+  {n:"Selma Labib", p:"NPA-Révolutionnaires", b:"eg", d:"2026-06-17", s:"actif"},
+  {n:"Emmanuel Dubuisson", p:"Sans étiquette", b:"inc", d:"2026-06-18", s:"actif"},
+  {n:"Marine Le Pen", p:"Rassemblement national", b:"ed", d:"2026-07-07", s:"actif", rec:4},
+  {n:"Bernard Cazeneuve", p:"La Convention", b:"g", d:"2026-07-16", s:"actif"},
+  {n:"Francis Lalanne", p:"France Libre", b:"inc", d:"2026-08-19", s:"actif"},
+  {n:"Raphaël Glucksmann", p:"Place publique", b:"g", d:"2026-08-23", s:"actif", note:"Vainqueur de la primaire PS-PP"},
+  {n:"Sylvain Durif", p:"Elvita", b:"inc", d:"2026-08-23", s:"actif"},
+  {n:"Fabien Roussel", p:"Parti communiste français", b:"gr", d:"2026-09-06", s:"actif", rec:2},
+  {n:"Éric Zemmour", p:"Reconquête", b:"ed", d:"2026-09-17", s:"actif", rec:2},
+  {n:"Olivier Becht", p:"Sans étiquette", b:"c", d:"2026-09-24", s:"actif"},
+  {n:"Gilles Platret", p:"Divers droite", b:"d", d:"2026-10-08", s:"actif"},
+  {n:"Natacha Polony", p:"Nous sommes la France", b:"sv", d:"2026-10-14", s:"actif"},
+  {n:"Mira Markovic", p:"Parti animaliste", b:"inc", d:null, s:"actif"},
+  {n:"Benoît Mathieu", p:"Sans étiquette", b:"inc", d:null, s:"actif", note:"Campagne à vélo"},
+  {n:"Antoine Mikolajczak", p:"Équinoxe", b:"inc", d:null, s:"actif"},
+  {n:"Manolo Mlekuz", p:"Trajectoire", b:"inc", d:null, s:"actif"},
+  {n:"Jean-François Legendre", p:"À nous maintenant", b:"inc", d:null, s:"actif"},
+  // ---- Le cimetière ----
+  {n:"Clémentine Autain", p:"L'Après", b:"gr", d:"2025-06-14", s:"cimetiere", fin:"2026-07-11", note:"Retrait"},
+  {n:"Jérôme Guedj", p:"Parti socialiste", b:"g", d:"2026-02-05", s:"cimetiere", fin:"2026-10-11", note:"Battu à la primaire"},
+  {n:"Philippe Brun", p:"Parti socialiste", b:"g", d:"2026-06-30", s:"cimetiere", fin:"2026-09-16", note:"Écarté de la primaire"},
+  {n:"Ségolène Royal", p:"Parti socialiste", b:"g", d:"2026-07-10", s:"cimetiere", fin:"2026-10-11", note:"Battue à la primaire"},
+  {n:"Olivier Faure", p:"Parti socialiste", b:"g", d:"2026-08-30", s:"cimetiere", fin:"2026-10-11", note:"Battu à la primaire"},
+  {n:"Emmanuel Maurel", p:"Gauche républicaine et socialiste", b:"g", d:"2026-09-04", s:"cimetiere", fin:"2026-10-11", note:"Battu à la primaire"},
+  // ---- Ils hésitent ----
+  {n:"François Hollande", p:"Parti socialiste", b:"g", d:null, s:"pressenti", note:"Décision annoncée pour décembre"},
+  {n:"Dominique de Villepin", p:"La France humaniste", b:"c", d:null, s:"pressenti", note:"« Je veux être candidat »"},
+  {n:"Jean Lassalle", p:"Résistons !", b:"sv", d:null, s:"pressenti", note:"Suspendu à une collecte de fonds"},
+  {n:"Bruno Le Maire", p:"Renaissance", b:"c", d:null, s:"pressenti", note:"Réflexion en cours"}
+];
+
+/* ========================================================= */
+const $ = s => document.querySelector(s);
+const TODAY = new Date();
+const fr = new Intl.DateTimeFormat("fr-FR",{day:"numeric",month:"long",year:"numeric"});
+const frM = new Intl.DateTimeFormat("fr-FR",{month:"short",year:"2-digit"});
+const parse = d => new Date(d+"T12:00:00");
+const jours = d => Math.max(0, Math.round((TODAY - parse(d))/864e5));
+const initials = n => n.split(/[\s-]+/).filter(w=>/^[A-ZÉÈÀ]/.test(w)).map(w=>w[0]).slice(0,2).join("");
+const esc = s => String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+const actifs = C.filter(c=>c.s==="actif");
+const cimetiere = C.filter(c=>c.s==="cimetiere");
+const pressentis = C.filter(c=>c.s==="pressenti");
+const lances = C.filter(c=>c.s!=="pressenti");
+const N = actifs.length;
+
+// Numéro d'ordre dans la file (par date d'annonce, inconnus en fin)
+[...lances].sort((a,b)=>(a.d||"9999").localeCompare(b.d||"9999")).forEach((c,i)=>c.rang=i+1);
+
+/* ---------- Compteur animé ---------- */
+(function(){
+  const el=$("#compteur"); let t0=null; const dur=1600;
+  const step=ts=>{ if(!t0)t0=ts; const k=Math.min(1,(ts-t0)/dur); el.textContent=Math.round(N*(1-Math.pow(1-k,3))); if(k<1)requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+  $("#maj").textContent = `Décompte au ${fr.format(parse(MAJ))} · + ${pressentis.length} qui hésitent encore · ${cimetiere.length} déjà tombés au combat`;
+})();
+
+/* ---------- Statistiques ---------- */
+(function(){
+  const in2026 = lances.filter(c=>c.d && c.d>="2026-01-01" && c.d<=MAJ).length;
+  const daysIn2026 = Math.round((parse(MAJ)-parse("2026-01-01"))/864e5);
+  const rythme = String(Math.round(daysIn2026/in2026));
+  const doyen = [...actifs].filter(c=>c.d).sort((a,b)=>a.d.localeCompare(b.d))[0];
+  const parr = (N*500).toLocaleString("fr-FR");
+  const stats = [
+    {v:N, l:"candidats en lice", s:`Record de 2002 : 16 sur le bulletin. Ici on est à ×${(N/16).toFixed(1).replace(".",",")}.`},
+    {v:rythme+" j", l:"un nouveau candidat tous les "+rythme+" jours", s:`${in2026} annonces depuis le 1er janvier 2026.`},
+    {v:parr, l:"parrainages nécessaires", s:`Si tout le monde va au bout (500 chacun). Bon courage aux maires.`},
+    {v:jours(doyen.d).toLocaleString("fr-FR")+" j", l:"de campagne pour le doyen de la file", s:`${doyen.n}, déclaré le ${fr.format(parse(doyen.d))}.`},
+    {v:"12", l:"candidats sur le bulletin en 2022", s:`Ici, on en a déjà ${N-12} de trop. Au moins.`},
+    {v:C.filter(c=>c.rec>=4).length, l:"en sont à leur 4e tentative", s:"La persévérance, c'est une valeur."}
+  ];
+  $("#stats").innerHTML = stats.map(s=>`<div class="stat"><div class="v">${s.v}</div><div class="l">${s.l}</div><div class="s">${s.s}</div></div>`).join("");
+  $("#ticker").textContent = (`🚨 FLASH : ${N} CANDIDATS DÉCLARÉS · 1 NOUVEAU TOUS LES ${rythme} JOURS · ${parr} PARRAINAGES À TROUVER · ${pressentis.length} INDÉCIS EN EMBUSCADE · LE CONSEIL CONSTITUTIONNEL A COMMANDÉ DES BULLETINS EN A3 · `).repeat(4);
+})();
+
+/* ---------- Graphique mensuel ---------- */
+(function(){
+  const svg=$("#chart"), W=900, H=380, m={l:40,r:44,t:20,b:56};
+  const dated = lances.filter(c=>c.d).sort((a,b)=>a.d.localeCompare(b.d));
+  const start="2025-01", end=MAJ.slice(0,7);
+  const months=[]; let [y,mo]=start.split("-").map(Number);
+  while(`${y}-${String(mo).padStart(2,"0")}`<=end){ months.push(`${y}-${String(mo).padStart(2,"0")}`); mo++; if(mo>12){mo=1;y++;} }
+  const avant = dated.filter(c=>c.d.slice(0,7)<start).length;
+  const per = months.map(k=>dated.filter(c=>c.d.slice(0,7)===k).length);
+  let cum=avant; const cumul=per.map(v=>cum+=v);
+  const cols=["avant", ...months], vals=[avant,...per], cums=[avant,...cumul];
+  const iw=W-m.l-m.r, ih=H-m.t-m.b, bw=iw/cols.length;
+  const maxV=Math.max(...vals)+1, maxC=Math.ceil((Math.max(...cums)+2)/5)*5;
+  const yV=v=>m.t+ih-(v/maxV)*ih, yC=v=>m.t+ih-(v/maxC)*ih;
+  let g="";
+  for(let i=0;i<=maxC;i+=5){ g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${yC(i)}" y2="${yC(i)}" stroke="#dfe5f7" stroke-dasharray="4 4"/><text x="${W-m.r+6}" y="${yC(i)+4}" font-size="12" fill="#ED2939">${i}</text>`; }
+  vals.forEach((v,i)=>{
+    const x=m.l+i*bw+bw*.15, w=bw*.7, yy=yV(v);
+    g+=`<rect x="${x}" y="${yy}" width="${w}" height="${m.t+ih-yy}" fill="#002395" stroke="#0b1640" stroke-width="2"><title>${v} annonce(s)</title></rect>`;
+    if(v>0) g+=`<text x="${x+w/2}" y="${yy-5}" text-anchor="middle" font-size="13" font-weight="700" fill="#002395">${v}</text>`;
+    const lab = i===0 ? "avant" : frM.format(parse(cols[i]+"-15")).replace(".","");
+    if(i===0 || i%2===1 || i===cols.length-1) g+=`<text x="${x+w/2}" y="${H-m.b+18}" text-anchor="end" font-size="12" transform="rotate(-40 ${x+w/2} ${H-m.b+18})">${lab}</text>`;
+  });
+  const pts=cums.map((v,i)=>`${m.l+i*bw+bw/2},${yC(v)}`).join(" ");
+  g+=`<polyline points="${pts}" fill="none" stroke="#ED2939" stroke-width="4" stroke-linejoin="round"/>`;
+  cums.forEach((v,i)=>{ g+=`<circle cx="${m.l+i*bw+bw/2}" cy="${yC(v)}" r="4" fill="#fff" stroke="#ED2939" stroke-width="3"/>`; });
+  const last=cums[cums.length-1];
+  g+=`<text x="${m.l+(cols.length-1)*bw+bw/2-6}" y="${yC(last)-12}" text-anchor="end" font-family="Anton,Impact" font-size="22" fill="#ED2939">${last} 🔥</text>`;
+  g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${m.t+ih}" y2="${m.t+ih}" stroke="#0b1640" stroke-width="2"/>`;
+  svg.innerHTML=g;
+  const sc=svg.parentElement; requestAnimationFrame(()=>{ sc.scrollLeft=sc.scrollWidth; });
+  const imax=per.indexOf(Math.max(...per));
+  $("#record").textContent=`🥇 Mois record : ${new Intl.DateTimeFormat("fr-FR",{month:"long",year:"numeric"}).format(parse(months[imax]+"-15"))}, avec ${per[imax]} nouvelles candidatures.`;
+})();
+
+/* ---------- Classements ---------- */
+(function(){
+  const count = key => { const o={}; lances.forEach(c=>{o[c[key]]=(o[c[key]]||0)+1}); return Object.entries(o).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0])); };
+  const medal = i => ["🥇","🥈","🥉"][i] || (i+1);
+  const bords = count("b"), maxB=bords[0][1];
+  $("#rankBord").innerHTML = bords.map(([k,v],i)=>{
+    const enLice = actifs.filter(c=>c.b===k).length;
+    return `<li><span class="pos">${medal(i)}</span><div class="barwrap"><div class="barlab">${BORDS[k].lab}</div><div class="bar" data-w="${v/maxB*100}" style="background:${BORDS[k].col}"></div><div class="quip">${enLice} en lice${v-enLice? " · "+(v-enLice)+" au cimetière":""}</div></div><span class="num">${v}</span></li>`;
+  }).join("");
+  const partis = count("p").filter(([k])=>k!=="Sans étiquette"), maxP=partis[0][1];
+  const top = partis.filter(([,v])=>v>1), solo = partis.filter(([,v])=>v===1).length;
+  $("#rankParti").innerHTML = top.map(([k,v],i)=>{
+    const c=lances.find(x=>x.p===k);
+    return `<li><span class="pos">${medal(i)}</span><div class="barwrap"><div class="barlab">${esc(k)}</div><div class="bar" data-w="${v/maxP*100}" style="background:${BORDS[c.b].col}"></div>${v>1?`<div class="quip">${v} candidats pour un seul parti. Efficace.</div>`:""}</div><span class="num">${v}</span></li>`;
+  }).join("") + `<li><span class="pos">🧩</span><div class="barwrap"><div class="barlab">Étiquettes différentes au total</div><div class="quip">Un parti par candidat, ou presque.</div></div><span class="num">${partis.length}</span></li><li><span class="pos">🎪</span><div class="barwrap"><div class="barlab">Partis à 1 candidat</div><div class="quip">Et ${lances.filter(c=>c.p==="Sans étiquette").length} sans étiquette du tout.</div></div><span class="num">${solo}</span></li>`;
+  const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.querySelectorAll(".bar").forEach(b=>b.style.width=b.dataset.w+"%"); io.unobserve(e.target);} }),{threshold:.3});
+  io.observe($("#classements"));
+})();
+
+/* ---------- Trombinoscope ---------- */
+(function(){
+  let statut="actif", bord="tous";
+  const filters=$("#filters");
+  const drawFilters=()=>{
+    const pool=C.filter(c=>c.s===statut);
+    const keys=Object.keys(BORDS).filter(k=>pool.some(c=>c.b===k));
+    filters.innerHTML=[`<button class="chip" data-b="tous" aria-pressed="${bord==="tous"}">Tous (${pool.length})</button>`]
+      .concat(keys.map(k=>`<button class="chip" data-b="${k}" aria-pressed="${bord===k}">${BORDS[k].lab} (${pool.filter(c=>c.b===k).length})</button>`)).join("");
+  };
+  const draw=()=>{
+    let list=C.filter(c=>c.s===statut && (bord==="tous"||c.b===bord));
+    list.sort((a,b)=>(a.d||"9999").localeCompare(b.d||"9999")||a.n.localeCompare(b.n));
+    $("#grid").innerHTML=list.map(c=>{
+      const B=BORDS[c.b];
+      const av=c.photo?`<img src="${esc(c.photo)}" alt="${esc(c.n)}" loading="lazy">`:initials(c.n);
+      let since="";
+      if(c.s==="actif") since=c.d?`📅 En campagne depuis ${jours(c.d).toLocaleString("fr-FR")} j`:"📅 Date d'annonce non précisée";
+      if(c.s==="cimetiere") since=`⏱️ A tenu ${Math.round((parse(c.fin)-parse(c.d))/864e5)} jours`;
+      if(c.s==="pressenti") since="🤔 Toujours pas décidé·e";
+      return `<article class="card ${c.s==="cimetiere"?"dead":""} ${c.s==="pressenti"?"maybe":""}">
+        ${c.rang?`<span class="num-badge">#${c.rang}</span>`:""}
+        ${c.rec>=2?`<span class="recid">${c.rec}e fois</span>`:""}
+        <div class="avatar ${B.tri?"tri":""}" style="background:${B.col};color:${B.fg}">${av}</div>
+        <h3>${esc(c.n)}</h3>
+        <div class="party">${esc(c.p)}</div>
+        <span class="tag ${B.tri?"tri":""}" style="background:${B.col};color:${B.fg}">${B.lab}</span>
+        <div class="since">${since}</div>
+        ${c.note?`<div class="note">${esc(c.note)}</div>`:""}
+      </article>`;
+    }).join("");
+  };
+  document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
+    document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",x===t));
+    statut=t.dataset.s; bord="tous"; drawFilters(); draw();
+  }));
+  filters.addEventListener("click",e=>{ const b=e.target.closest(".chip"); if(!b)return; bord=b.dataset.b; drawFilters(); draw(); });
+  drawFilters(); draw();
+})();
+
+/* ---------- Générateur « je me présente » ---------- */
+(function(){
+  const A=["Parti","Mouvement","Rassemblement","Union","Front","Alliance","Collectif","Comité"];
+  const B=["du Dimanche Matin","des Gens Raisonnables","pour la Sieste Obligatoire","des Croissants au Beurre","du Bon Sens Paysan","pour la Semaine de 3 Jours","des Ronds-Points Libres","de la Baguette Tradition","pour le Wifi Gratuit Partout","des Apéros Républicains"];
+  const S=["Enfin quelqu'un d'autre.","Pourquoi pas moi ?","Le changement, c'est à mon tour.","Un de plus, un de mieux.","Ensemble, soyons nombreux.","Je n'ai pas lu le programme des autres non plus."];
+  const pick=a=>a[Math.floor(Math.random()*a.length)];
+  $("#gogo").addEventListener("click",()=>{
+    const nom=($("#prenom").value.trim()||"Jean Dupont").slice(0,40);
+    const rang=lances.length+1;
+    const af=$("#affiche");
+    af.innerHTML=`<span class="n">Candidat·e n°${rang}</span><div class="grand">${esc(nom)} 2027</div><div>${pick(A)} ${pick(B)}</div><div class="slogan">« ${pick(S)} »</div><p style="font-size:13px;margin:10px 0 0">Parrainages obtenus : 0 / 500. On y croit.</p>`;
+    af.style.display="block";
+  });
+})();
+
+/* ---------- Partage ---------- */
+$("#share").addEventListener("click",async()=>{
+  const text=`${N} candidats déclarés à la présidentielle 2027. Pour UN fauteuil. 🗳️🤯`;
+  const url=location.href;
+  if(navigator.share){ try{ await navigator.share({title:document.title,text,url}); }catch(e){} return; }
+  try{ await navigator.clipboard.writeText(text+" "+url); const t=$("#toast"); t.classList.add("on"); setTimeout(()=>t.classList.remove("on"),1800); }catch(e){ window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(text)+"&url="+encodeURIComponent(url),"_blank"); }
+});
+</script>
+</body>
+</html>
