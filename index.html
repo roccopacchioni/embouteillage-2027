@@ -157,12 +157,12 @@ footer ul{padding-left:18px;margin:6px 0 14px}
 
   <section id="evolution">
     <h2>📈 La courbe de la fièvre</h2>
-    <p class="h2s">Nouvelles candidatures par mois, et le cumul qui grimpe, grimpe, grimpe.</p>
+    <p class="h2s">Nouvelles candidatures par mois, et le nombre de candidats en lice qui grimpe, grimpe, grimpe. Dernière colonne : les candidats dont la date d'annonce est inconnue.</p>
     <div class="box">
       <div class="chartscroll"><svg id="chart" viewBox="0 0 900 380" role="img" aria-label="Évolution mensuelle des candidatures"></svg></div>
       <div class="legend" style="color:#0b1640">
         <span><i style="background:var(--bleu)"></i>Nouvelles candidatures du mois</span>
-        <span><i style="background:var(--rouge)"></i>Cumul (tous ceux qui se sont lancés)</span>
+        <span><i style="background:var(--rouge)"></i>Candidats en lice (annonces moins retraits)</span>
       </div>
       <div class="bubble" id="record"></div>
     </div>
@@ -351,8 +351,11 @@ const N = actifs.length;
   while(`${y}-${String(mo).padStart(2,"0")}`<=end){ months.push(`${y}-${String(mo).padStart(2,"0")}`); mo++; if(mo>12){mo=1;y++;} }
   const avant = dated.filter(c=>c.d.slice(0,7)<start).length;
   const per = months.map(k=>dated.filter(c=>c.d.slice(0,7)===k).length);
-  let cum=avant; const cumul=per.map(v=>cum+=v);
-  const cols=["avant", ...months], vals=[avant,...per], cums=[avant,...cumul];
+  // Courbe = candidats en lice à la fin de chaque période (annonces moins retraits)
+  const enLice = k => dated.filter(c=>c.d.slice(0,7)<=k).length - cimetiere.filter(c=>c.fin.slice(0,7)<=k).length;
+  const sansDate = actifs.filter(c=>!c.d).length;
+  const cols=["avant", ...months], vals=[avant,...per], cums=[enLice("2024-12"), ...months.map(enLice)];
+  if(sansDate){ cols.push("date ?"); vals.push(sansDate); cums.push(cums[cums.length-1]+sansDate); }
   const iw=W-m.l-m.r, ih=H-m.t-m.b, bw=iw/cols.length;
   const maxV=Math.max(...vals)+1, maxC=Math.ceil((Math.max(...cums)+2)/5)*5;
   const yV=v=>m.t+ih-(v/maxV)*ih, yC=v=>m.t+ih-(v/maxC)*ih;
@@ -362,7 +365,7 @@ const N = actifs.length;
     const x=m.l+i*bw+bw*.15, w=bw*.7, yy=yV(v);
     g+=`<rect x="${x}" y="${yy}" width="${w}" height="${m.t+ih-yy}" fill="#002395" stroke="#0b1640" stroke-width="2"><title>${v} annonce(s)</title></rect>`;
     if(v>0) g+=`<text x="${x+w/2}" y="${yy-5}" text-anchor="middle" font-size="13" font-weight="700" fill="#002395">${v}</text>`;
-    const lab = i===0 ? "avant" : frM.format(parse(cols[i]+"-15")).replace(".","");
+    const lab = (i===0 || !/^\d{4}-\d{2}$/.test(cols[i])) ? cols[i] : frM.format(parse(cols[i]+"-15")).replace(".","");
     if(i===0 || i%2===1 || i===cols.length-1) g+=`<text x="${x+w/2}" y="${H-m.b+18}" text-anchor="end" font-size="12" transform="rotate(-40 ${x+w/2} ${H-m.b+18})">${lab}</text>`;
   });
   const pts=cums.map((v,i)=>`${m.l+i*bw+bw/2},${yC(v)}`).join(" ");
