@@ -157,7 +157,7 @@ footer ul{padding-left:18px;margin:6px 0 14px}
 
   <section id="evolution">
     <h2>📈 La courbe de la fièvre</h2>
-    <p class="h2s">Nouvelles candidatures par mois, et le nombre de candidats en lice qui grimpe, grimpe, grimpe. Dernière colonne : les candidats dont la date d'annonce est inconnue.</p>
+    <p class="h2s">Nouvelles candidatures par mois, et le nombre de candidats en lice qui grimpe, grimpe, grimpe.</p>
     <div class="box">
       <div class="chartscroll"><svg id="chart" viewBox="0 0 900 380" role="img" aria-label="Évolution mensuelle des candidatures"></svg></div>
       <div class="legend" style="color:#0b1640">
@@ -231,6 +231,7 @@ footer ul{padding-left:18px;margin:6px 0 14px}
    fin : date du retrait / de la défaite (cimetière)
    photo : URL d'une photo libre de droits (laisser vide = initiales)
    rec : nombre de candidatures présidentielles (badge « récidiviste »)
+   approx : true si la date est celle de la première mention presse (annonce non datée)
    ========================================================= */
 const MAJ = "2026-11-09";
 const BORDS = {
@@ -277,11 +278,11 @@ const C = [
   {n:"Gilles Platret", p:"Divers droite", b:"d", d:"2026-10-08", s:"actif"},
   {n:"Natacha Polony", p:"Nous sommes la France", b:"sv", d:"2026-10-14", s:"actif"},
   {n:"Teddy Riner", p:"Sans étiquette", b:"inc", d:"2026-11-09", s:"actif", note:"« Ni de gauche ni de droite »"},
-  {n:"Mira Markovic", p:"Parti animaliste", b:"inc", d:null, s:"actif"},
-  {n:"Benoît Mathieu", p:"Sans étiquette", b:"inc", d:null, s:"actif", note:"Campagne à vélo"},
-  {n:"Antoine Mikolajczak", p:"Équinoxe", b:"inc", d:null, s:"actif"},
-  {n:"Manolo Mlekuz", p:"Trajectoire", b:"inc", d:null, s:"actif"},
-  {n:"Jean-François Legendre", p:"À nous maintenant", b:"inc", d:null, s:"actif"},
+  {n:"Mira Markovic", p:"Parti animaliste", b:"inc", d:"2026-10-02", s:"actif"},
+  {n:"Benoît Mathieu", p:"Sans étiquette", b:"inc", d:"2026-03-29", approx:true, s:"actif", note:"Campagne à vélo"},
+  {n:"Antoine Mikolajczak", p:"Équinoxe", b:"inc", d:"2026-07-09", approx:true, s:"actif"},
+  {n:"Manolo Mlekuz", p:"Trajectoire", b:"inc", d:"2026-05-27", approx:true, s:"actif"},
+  {n:"Jean-François Legendre", p:"À nous maintenant", b:"inc", d:"2026-05-23", s:"actif"},
   // ---- Le cimetière ----
   {n:"Clémentine Autain", p:"L'Après", b:"gr", d:"2025-06-14", s:"cimetiere", fin:"2026-07-11", note:"Retrait"},
   {n:"Jérôme Guedj", p:"Parti socialiste", b:"g", d:"2026-02-05", s:"cimetiere", fin:"2026-10-11", note:"Battu à la primaire"},
@@ -355,7 +356,7 @@ const N = actifs.length;
   const enLice = k => dated.filter(c=>c.d.slice(0,7)<=k).length - cimetiere.filter(c=>c.fin.slice(0,7)<=k).length;
   const sansDate = actifs.filter(c=>!c.d).length;
   const cols=["avant", ...months], vals=[avant,...per], cums=[enLice("2024-12"), ...months.map(enLice)];
-  if(sansDate){ cols.push("date ?"); vals.push(sansDate); cums.push(cums[cums.length-1]+sansDate); }
+  if(sansDate){ cums[cums.length-1]+=sansDate; } // candidats sans date : comptés dans le total, sans colonne dédiée
   const iw=W-m.l-m.r, ih=H-m.t-m.b, bw=iw/cols.length;
   const maxV=Math.max(...vals)+1, maxC=Math.ceil((Math.max(...cums)+2)/5)*5;
   const yV=v=>m.t+ih-(v/maxV)*ih, yC=v=>m.t+ih-(v/maxC)*ih;
@@ -376,8 +377,11 @@ const N = actifs.length;
   g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${m.t+ih}" y2="${m.t+ih}" stroke="#0b1640" stroke-width="2"/>`;
   svg.innerHTML=g;
   const sc=svg.parentElement; requestAnimationFrame(()=>{ sc.scrollLeft=sc.scrollWidth; });
-  const imax=per.indexOf(Math.max(...per));
-  $("#record").textContent=`🥇 Mois record : ${new Intl.DateTimeFormat("fr-FR",{month:"long",year:"numeric"}).format(parse(months[imax]+"-15"))}, avec ${per[imax]} nouvelles candidatures.`;
+  const mx=Math.max(...per), fmt=new Intl.DateTimeFormat("fr-FR",{month:"long",year:"numeric"});
+  const tops=months.filter((k,i)=>per[i]===mx).map(k=>fmt.format(parse(k+"-15")));
+  $("#record").textContent = tops.length>1
+    ? `🥇 Mois records ex aequo : ${tops.slice(0,-1).join(", ")} et ${tops.slice(-1)}, avec ${mx} nouvelles candidatures chacun.`
+    : `🥇 Mois record : ${tops[0]}, avec ${mx} nouvelles candidatures.`;
 })();
 
 /* ---------- Classements ---------- */
@@ -416,7 +420,7 @@ const N = actifs.length;
       const B=BORDS[c.b];
       const av=c.photo?`<img src="${esc(c.photo)}" alt="${esc(c.n)}" loading="lazy">`:initials(c.n);
       let since="";
-      if(c.s==="actif") since=c.d?`📅 En campagne depuis ${jours(c.d).toLocaleString("fr-FR")} j`:"📅 Date d'annonce non précisée";
+      if(c.s==="actif") since=c.d?`📅 En campagne depuis ${c.approx?"environ ":""}${jours(c.d).toLocaleString("fr-FR")} j`:"📅 Date d'annonce non précisée";
       if(c.s==="cimetiere") since=`⏱️ A tenu ${Math.round((parse(c.fin)-parse(c.d))/864e5)} jours`;
       if(c.s==="pressenti") since="🤔 Toujours pas décidé·e";
       return `<article class="card ${c.s==="cimetiere"?"dead":""} ${c.s==="pressenti"?"maybe":""}">
